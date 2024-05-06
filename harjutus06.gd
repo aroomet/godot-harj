@@ -1,4 +1,4 @@
-# joosep alasoo
+# Roomet Altmäe
 #19.03.24
 #harjutus 6
 extends Node
