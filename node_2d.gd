@@ -1,5 +1,5 @@
 extends Node2D
-
+# harjutus 6
 
 var vaenlaseElud = 100
 var salveSuurus = 5
