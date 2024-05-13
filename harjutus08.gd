@@ -4,54 +4,66 @@
 
 
 extends Node2D
-var vaenlasepunktid = 0
-var punktid = 0
+var player_score = 0
+var enemy_score = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$Sprite2D/punktid.text= "punktid:"+str(punktid)
-	$Sprite2D/vaenlasepunktid.text= "punktid:"+str(vaenlasepunktid)
-func game(valik):
-	var valikud=["kivi","paber","käärid"]
-	var arvutivalik = valikud[randi() % valikud.size()]
-	print("kasutaja valik:"+valik)
-	$Sprite2D/arvutivalik.text=arvutivalik
-	if valik==arvutivalik:
-		$Sprite2D/tulemus.text= "viik"
-	elif valik=="kivi" && arvutivalik=="paber":
-		$Sprite2D/tulemus.text= "arvuti võitis"
-		vaenlasepunktid+=1
-	elif valik=="paber" && arvutivalik=="käärid":
-		$Sprite2D/tulemus.text= "arvuti võitis"
-		vaenlasepunktid+=1
-	elif valik=="käärid" && arvutivalik=="kivi":
-		$Sprite2D/tulemus.text= "arvuti võitis"
-		vaenlasepunktid+=1
-	else:
-		$Sprite2D/tulemus.text= "mängija võitis"
-		punktid+=1
-	if punktid == 10 || vaenlasepunktid==10:
-		$Sprite2D/tulemus.text= "GAME OVER"
-		get_tree().paused = true
-func _on_uusmang_pressed():
+	$"player_score".text="Skoor: "+str(player_score)
+	$"enemy_score".text="Skoor: "+str(enemy_score)
+func _on_new_game_pressed():
 	get_tree().reload_current_scene()
 
-
-func _on_kaarid_pressed():
-	$Sprite2D/valik.text="käärid"
-	game("käärid")
+func _on_kivi_pressed():
+	$"player_choice".text="kivi"
+	game("kivi")
 
 
 func _on_paber_pressed():
-	$Sprite2D/valik.text="paber"
+	$"player_choice".text="paber"
 	game("paber")
 
 
-func _on_kivi_pressed():
-	$Sprite2D/valik.text="kivi"
-	game("kivi")
+func _on_kaarid_pressed():
+	$"player_choice".text="käärid"
+	game("käärid")
+
+func game(valik):
+	var valikud=["kivi","paber","käärid"]
+	var choice = valikud[randi() % valikud.size()]
+	$"enemy_choice".text=choice
+	print(valik)
+	print(choice)
+	if valik==choice:
+		$"Otsus".text="viik"
+	elif valik=="kivi" && choice=="paber":
+		$"Otsus".text="Arvuti võitis"
+		enemy_score+=1
+	elif valik=="kivi" && choice=="käärid":
+		$"Otsus".text="Mängija võitis"
+		player_score+=1
+	elif valik=="paber" && choice=="käärid":
+		$"Otsus".text="Arvuti võitis"
+		enemy_score+=1
+	elif valik=="käärid" && choice=="paber":
+		$"Otsus".text= "Mängija võitis"
+		player_score+=1
+	elif valik=="käärid" && choice=="kivi":
+		$"Otsus".text= "Arvuti võitis"
+		enemy_score+=1
+	elif valik=="paber" && choice=="kivi":
+		$"Otsus".text= "Mängija võitis"
+		player_score+=1
+	if player_score>=10 || enemy_score>=10:
+		$"player_score".text="Skoor: "+str(player_score)
+		$"enemy_score".text="Skoor: "+str(enemy_score)
+		get_tree().paused=true 
+		if player_score>enemy_score:
+			$"Otsus".text="Mängija võitis"
+		else:
+			$"Otsus".text="Arvuti võitis"
